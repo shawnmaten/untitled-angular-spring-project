@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-frontend-service
+spec:
+  selector:
+    app: test-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-frontend-deployment
+spec:
+  selector:
+    matchLabels:
+      app: test-frontend
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: test-frontend
+    spec:
+      containers:
+      - name: nginx
+        image: test-frontend:v4
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 80
+
