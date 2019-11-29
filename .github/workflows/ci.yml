@@ -41,7 +41,7 @@ jobs:
 
     # Set up docker to authenticate with GitHub package service
     - run: |
-        docker login docker.pkg.github.com --username $GITHUB_REPOSITORY --password $GITHUB_TOKEN
+        docker login docker.pkg.github.com --username $GITHUB_REPOSITORY --password ${{ secrets.GITHUB_TOKEN }}
       
     # Build the Docker image
     - name: Build
