@@ -21,7 +21,7 @@ env:
   GKE_EMAIL: ${{ secrets.GKE_EMAIL }}
   GKE_REGION: us-central1
   GKE_CLUSTER: cluster-01
-  IMAGE: docker.pkg.github.com/${{ GITHUB_REPOSITORY }}/test-frontend
+  IMAGE: docker.pkg.github.com/${{ github.repository }}/test-frontend
 
 jobs:
   setup-build-publish-deploy:
