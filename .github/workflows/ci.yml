@@ -68,7 +68,7 @@ jobs:
         cd ./base
         ../kustomize edit set image test-frontend="$IMAGE":"$GITHUB_SHA"
         cd ../
-        kubectl apply -k ./
+        kubectl apply -k ./production
         kubectl rollout status deployment/test-frontend-deployment
         kubectl get services -o wide
 
