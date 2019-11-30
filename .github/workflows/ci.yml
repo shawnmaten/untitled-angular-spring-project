@@ -65,8 +65,9 @@ jobs:
     - name: Deploy
       run: |
         gcloud container clusters get-credentials $GKE_CLUSTER --region $GKE_REGION --project $GKE_PROJECT
-        cd ./production
-        ../kustomize edit set image test-frontend="$IMAGE":"$GITHUB_SHA" 
+        cd ./base
+        ../kustomize edit set image test-frontend="$IMAGE":"$GITHUB_SHA"
+        cd ../
         kubectl apply -k ./
         kubectl rollout status deployment/test-frontend-deployment
         kubectl get services -o wide
