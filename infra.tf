@@ -1,8 +1,25 @@
+data "google_client_config" "default" {}
+
+data "google_container_cluster" "cluster_01" {
+  name = "cluster-01"
+  location = "us-central1"
+}
+
 provider "google" {
   credentials = file("gcp.key.json")
   project     = "untitled-angular-spring"
   region      = "us-central1"
   zone        = "us-central1-c"
+}
+
+provider "kubernetes" {
+  load_config_file = false
+
+  host  = "https://${data.google_container_cluster.cluster_01.endpoint}"
+  token = data.google_client_config.default.access_token
+  cluster_ca_certificate = base64decode(
+    data.google_container_cluster.cluster_01.master_auth[0].cluster_ca_certificate,
+  )
 }
 
 resource "google_container_cluster" "primary" {
@@ -44,4 +61,16 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
       "https://www.googleapis.com/auth/monitoring",
     ]
   }
+}
+
+resource "kubernetes_secret" "github_package_cred" {
+  metadata {
+    name = "github-package-cred"
+  }
+
+  data = {
+    ".dockerconfigjson" = file("docker.config.json")
+  }
+
+  type = "kubernetes.io/dockerconfigjson"
 }
