@@ -27,7 +27,7 @@ https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-regi
 ```sh
 kubectl create secret docker-registry regcred --dry-run=true -o yaml \
   --docker-server=docker.pkg.github.com \
-  --docker-username=$GITHUB_REPOSITORY \
+  --docker-username=$GITHUB_USERNAME \
   --docker-password=$GITHUB_TOKEN | \
   perl -ne '/dockerconfigjson: (.+)/ && print $1' | \
   base64 -d \
